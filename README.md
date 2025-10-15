@@ -10,10 +10,10 @@ WeChatXposedControl 是一个基于 Xposed 框架的 Android 模块，用于微�
 
 ## 联系与支持
 
-作者： [[bigGreenPeople]](https://github.com/bigGreenPeople)
-QQ：1243596620
-Telegram (TG)：[@SpiderMonke7](https://t.me/SpiderMonke7)
-Email： [1243596620@qq.com]
+- 作者： [[bigGreenPeople]](https://github.com/bigGreenPeople)
+- QQ：1243596620
+- Telegram (TG)：[@SpiderMonke7](https://t.me/SpiderMonke7)
+- Email： [1243596620@qq.com]
 
 ## 系统要求
 
