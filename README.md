@@ -7,6 +7,8 @@
 WeChatXposedControl 是一个基于 Xposed 框架的 Android 模块，用于微信（WeChat）的行为控制和自定义。该模块通过 MQTT 协议与服务端通信，实现消息发送/接收、好友管理、朋友圈操作等功能。模块支持微信 8.x+ 版本，适用于 Root 设备（Magisk + LSPosed 推荐）。
 
 
+<img src="https://github.com/bigGreenPeople/SharkWechatBot/blob/main/%E6%9C%AA%E6%BF%80%E6%B4%BB.png?raw=true" width="150" alt="已激活"/>
+<img src="https://github.com/bigGreenPeople/SharkWechatBot/blob/main/%E5%B7%B2%E6%BF%80%E6%B4%BB.png?raw=true" width="150" alt="已激活"/>
 
 
 **警告：** 本模块仅供学习和研究使用。请遵守微信服务条款和法律法规。使用前备份数据，可能导致账号风险或应用崩溃。
