@@ -30,7 +30,7 @@ import de.robv.android.xposed.XposedHelpers;
 import de.robv.android.xposed.callbacks.XC_LoadPackage;
 
 public abstract class SuperModule implements IXposedHookLoadPackage {
-    public static final String TAG = "WxMod";
+    public static final String TAG = "SharkMod";
     public Activity currentActivity;
     public ClassLoader mClassLoader;
     public ViewManager mViewManager;

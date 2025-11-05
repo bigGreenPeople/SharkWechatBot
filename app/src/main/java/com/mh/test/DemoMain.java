@@ -1,7 +1,12 @@
 package com.mh.test;
 
+import static de.robv.android.xposed.XposedHelpers.findAndHookConstructor;
+
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.Application;
+import android.app.Instrumentation;
+import android.content.ContentValues;
 import android.text.Editable;
 import android.util.Base64;
 import android.util.Log;
@@ -49,7 +54,66 @@ public class DemoMain extends ViewModule {
 //        trackFragment(classLoader);
 
 
-        Log.i(TAG, "main: DemoMain 微信测试");
+        // 屏蔽掉热更新
+        findAndHookConstructor(
+                "com.tencent.tinker.loader.app.TinkerApplication", //
+                mClassLoader,
+                int.class,
+                String.class,
+                String.class,
+                boolean.class,
+                boolean.class,
+                boolean.class,
+                new XC_MethodHook() {
+                    @Override
+                    protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
+                        super.beforeHookedMethod(param);
+                        param.args[2] = "com.tencent.mm.app.MMApplicationLike"; // com.tencent.mm.app.MMApplicationLike
+                        logBefore(param);
+                    }
+                }
+        );
 
+        Log.i(TAG, "main: DemoMain 微信测试2");
+
+        XposedHelpers.findAndHookMethod(Instrumentation.class, "callApplicationOnCreate", Application.class, new XC_MethodHook() {
+            @Override
+            protected void afterHookedMethod(MethodHookParam param) throws Throwable {
+                super.afterHookedMethod(param);
+//                hookDb(classLoader);
+
+            }
+        });
+
+    }
+
+    public void hookDb(ClassLoader classLoader) {
+
+        XposedHelpers.findAndHookMethod("com.tencent.wcdb.compat.SQLiteDatabase", classLoader, "insertWithOnConflict", "java.lang.String", "java.lang.String", "android.content.ContentValues", int.class, new XC_MethodHook() {
+            @Override
+            protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
+                super.beforeHookedMethod(param);
+                logBefore(param);
+
+            }
+
+            @Override
+            protected void afterHookedMethod(MethodHookParam param) throws Throwable {
+                super.afterHookedMethod(param);
+            }
+        });
+
+        XposedHelpers.findAndHookMethod("com.tencent.wcdb.database.SQLiteDatabase", classLoader, "insertWithOnConflict", "java.lang.String", "java.lang.String", "android.content.ContentValues", int.class, new XC_MethodHook() {
+            @Override
+            protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
+                super.beforeHookedMethod(param);
+                logBefore(param);
+            }
+
+            @Override
+            protected void afterHookedMethod(MethodHookParam param) throws Throwable {
+                super.afterHookedMethod(param);
+            }
+        });
     }
 }
