@@ -49,7 +49,7 @@ public class DemoMain extends ViewModule {
 //        trackFragment(classLoader);
 
 
-        Log.i(TAG, "main: DemoMain");
+        Log.i(TAG, "main: DemoMain 微信测试");
 
     }
 }

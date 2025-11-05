@@ -80,6 +80,8 @@ task pushApkRunDevice(dependsOn: 'assembleDebug') {
         def rmInfo = "adb shell rm -rf $pushPath$jarName".execute().text
         println "Rm info:$rmInfo"
 
+        println "adb push ${new File(project.buildDir, "/outputs/apk/debug/app-debug.apk").canonicalPath} $pushPath$jarName"
+
         //push到手机上
         def info = "adb push ${new File(project.buildDir, "/outputs/apk/debug/app-debug.apk").canonicalPath} $pushPath$jarName".execute().text
         println "Push dex:$info"
