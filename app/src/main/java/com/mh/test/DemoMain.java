@@ -80,7 +80,7 @@ public class DemoMain extends ViewModule {
             @Override
             protected void afterHookedMethod(MethodHookParam param) throws Throwable {
                 super.afterHookedMethod(param);
-//                hookDb(classLoader);
+                hookDb(classLoader);
 
             }
         });
