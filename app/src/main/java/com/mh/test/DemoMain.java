@@ -80,11 +80,28 @@ public class DemoMain extends ViewModule {
             @Override
             protected void afterHookedMethod(MethodHookParam param) throws Throwable {
                 super.afterHookedMethod(param);
-                hookDb(classLoader);
+                hookMessage(classLoader);
 
             }
         });
 
+    }
+
+    public void hookMessage(ClassLoader classLoader) {
+        XposedHelpers.findAndHookMethod("com.tencent.mm.storage.s9", classLoader, "U9", long.class, "com.tencent.mm.storage.q9", boolean.class, new XC_MethodHook() {
+            @Override
+            protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
+                super.beforeHookedMethod(param);
+                logBefore(param);
+                Object message = param.args[1];
+                long msgSvrId = XposedHelpers.getLongField(message, "field_msgSvrId");
+                Log.i(TAG, "msgSvrId: "+msgSvrId);
+                long msgId = XposedHelpers.getLongField(message, "field_msgId");
+                Log.i(TAG, "msgId: "+msgId);
+
+            }
+
+        });
     }
 
     public void hookDb(ClassLoader classLoader) {
@@ -93,7 +110,7 @@ public class DemoMain extends ViewModule {
             @Override
             protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
                 super.beforeHookedMethod(param);
-                logBefore(param);
+//                logBefore(param);
 
             }
 
@@ -103,17 +120,48 @@ public class DemoMain extends ViewModule {
             }
         });
 
+        /**
+         * 消息相关
+         */
         XposedHelpers.findAndHookMethod("com.tencent.wcdb.database.SQLiteDatabase", classLoader, "insertWithOnConflict", "java.lang.String", "java.lang.String", "android.content.ContentValues", int.class, new XC_MethodHook() {
             @Override
             protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
                 super.beforeHookedMethod(param);
+
+                ContentValues contentValues = (ContentValues) param.args[2];
+                String tableName = (String) param.args[0];
+
+                if (tableName == null || !"message".equals(tableName)) return;
                 logBefore(param);
+
+                for (String key : contentValues.keySet()) {
+                    Log.i(TAG, "x Xposed: Key: " + key + " | Value: " + contentValues.get(key));
+
+                }
             }
 
+        });
+
+
+        XposedHelpers.findAndHookMethod("com.tencent.wcdb.database.SQLiteDatabase", classLoader, "updateWithOnConflict", "java.lang.String", "android.content.ContentValues", "java.lang.String", "java.lang.String[]", int.class, new XC_MethodHook() {
             @Override
-            protected void afterHookedMethod(MethodHookParam param) throws Throwable {
-                super.afterHookedMethod(param);
+            protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
+                super.beforeHookedMethod(param);
+
+                ContentValues contentValues = (ContentValues) param.args[1];
+                String tableName = (String) param.args[0];
+
+                if (tableName == null || !"message".equals(tableName)) return;
+                logBefore(param);
+
+                for (String key : contentValues.keySet()) {
+                    Log.i(TAG, "x Xposed: Key: " + key + " | Value: " + contentValues.get(key));
+
+                }
+
+                logStackTraceByException();
             }
         });
+
     }
 }
